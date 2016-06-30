@@ -66,9 +66,16 @@ def clean_data(data):
 
 
 if __name__ == "__main__":
+    
     boxofficemovies = get_movies('boxofficemojo')
     unclean_metamovies = get_movies('metacritic')
+    
     metamovies = clean_data([movie for movie in unclean_metamovies if type(movie) != list])
     
     boxofficemovies = pd.DataFrame(boxofficemovies)
     metamovies = pd.DataFrame(metamovies)
+    
+    metamovies = metamovies.drop(metamovies[['genre','genre_2','genre_3','genre_4', \
+                                'genre_5','genre_6','genre_7','genre_8', \
+                                'genre_9','genre_10','unable to retrieve_1', \
+                                'unable to retrieve_2']],axis=1).dropna()
