@@ -12,6 +12,7 @@ CapitalOne Metis Data Science Python Bootcamp Pilot Extravaganza 2K15.
 """
 
 # imports
+import re
 import os
 import json
 import pprint
@@ -66,6 +67,13 @@ def clean_data(data):
                 clean_dict[key] = values
         clean_movies.append(clean_dict)
     return clean_movies
+
+def title_cleaner(movie_dataframe,column):
+    movie_dataframe = movie_dataframe.dropna(subset=[column])
+    movie_dataframe['clean' + column] = pd.DataFrame(map(lambda x: \
+                                    re.sub('[^a-zA-Z0-9]','',x).lower().strip(), \
+                                    movie_dataframe[column]))
+    return movie_dataframe
 
 
 if __name__ == "__main__":
