@@ -56,6 +56,10 @@ def movie_date_to_datetime(date_string):
     return datetime.date(year, month, day)
 
 def clean_data(data):
+    """This function cleans the data from metacritic
+    when there are dictionaries with values that are
+    lists. It turns each value into its own column."""
+    
     clean_movies = []
     for movie in data:
         clean_dict = {}
@@ -69,11 +73,23 @@ def clean_data(data):
     return clean_movies
 
 def title_cleaner(movie_dataframe,column):
+    """This removes characters and spaces from strings."""
+    
     movie_dataframe = movie_dataframe.dropna(subset=[column])
     movie_dataframe['clean_' + column] = pd.DataFrame(map(lambda x: \
                                     re.sub('[^a-zA-Z0-9]','',x), \
                                     movie_dataframe[column]))
     return movie_dataframe
+    
+def movie_date_to_datetime(date_string):
+    """This function converts strings in the form of
+    YYYY-MM-DD to a datetime date variable""" 
+    
+    year = int(date_string[0:4])
+    month = int(date_string[5:7])
+    day = int(date_string[8:10])
+    return datetime.date(year, month, day)
+
 
 
 if __name__ == "__main__":
@@ -91,19 +107,17 @@ if __name__ == "__main__":
                                 'genre_9','genre_10','unable to retrieve_1', \
                                 'unable to retrieve_2']],axis=1)
     
-    boxofficemovies = title_cleaner(boxofficemovies, 'title')
-    metamovies = title_cleaner(metamovies, 'title')
+    boxofficemovies = boxofficemovies.dropna(subset = ['title'])
+    metamovies = metamovies.dropna(subset = ['title'])
     
-    unclean_movies = pd.merge(boxofficemovies, metamovies, how = 'inner', \
-                            on = ['title', 'director'])    
-
-    all_movies = pd.merge(boxofficemovies, metamovies, \
-                        how = 'inner', on = ['clean_title'])    
+    all_movies = pd.merge(boxofficemovies, metamovies, how = 'inner', \
+                            on = ['title'])    
     
-    '''
-    boxofficemovies = title_cleaner(boxofficemovies, 'title')                            
-    boxofficemovies = title_cleaner(boxofficemovies, 'director')
-    metamovies = title_cleaner(metamovies, 'title')
-    metamovies = title_cleaner(metamovies, 'director')
-    '''
+    mess_data = all_movies.copy(deep = True)
     
+    mess_data['metascore'] = mess_data['metascore'].div(10)
+    mess_data = mess_data.drop(mess_data[mess_data['user_score'] == 'tbd'].index.tolist())
+    mess_data['users-critics'] = mess_data['user_score'].mess_data['subtract(mess_data['metascore'])
+    
+    plt.scatter(mess_data['users-critics'],mess_data['domestic_gross'])
+    plt.scatter(mess_data['num_critic_reviews_4'],mess_data['num_user_ratings'])
