@@ -66,17 +66,7 @@ def clean_data(data):
 
 
 if __name__ == "__main__":
-    # constants
-    CURRENT_DIR = os.path.dirname(os.path.realpath('__file__'))
-    DATA_DIR = os.path.abspath(os.path.join(CURRENT_DIR, 'data'))
-    MOJO_DIR = os.path.join(DATA_DIR, 'boxofficemojo')
-    META_DIR = os.path.join(DATA_DIR, 'metacritic')
-
-    meta = Movies(META_DIR)
-    mojo = Movies(MOJO_DIR)
-    data1 = meta.load_movies()
-    data2 = mojo.load_movies()
-    clean_movies = clean_data(data1)
-
-    mojo_df = pd.DataFrame(data2)
-    meta_df = pd.DataFrame(clean_movies)
+    boxofficemovies = get_movies('boxofficemojo')
+    unclean_metamovies = get_movies('metacritic')
+    metamovies = [movie for movie in unclean_metamovies if type(movie) != list]
+    
