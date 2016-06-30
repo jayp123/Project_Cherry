@@ -57,7 +57,7 @@ def clean_data(data):
                     clean_dict["{0}_{1}".format(key,index)] = value
             else:
                 clean_dict[key] = values
-            clean_movies.append(clean_dict)
+        clean_movies.append(clean_dict)
     return clean_movies
 
 
