@@ -70,8 +70,8 @@ def clean_data(data):
 
 def title_cleaner(movie_dataframe,column):
     movie_dataframe = movie_dataframe.dropna(subset=[column])
-    movie_dataframe['clean' + column] = pd.DataFrame(map(lambda x: \
-                                    re.sub('[^a-zA-Z0-9]','',x).lower().strip(), \
+    movie_dataframe['clean_' + column] = pd.DataFrame(map(lambda x: \
+                                    re.sub('[^a-zA-Z0-9]','',x), \
                                     movie_dataframe[column]))
     return movie_dataframe
 
@@ -89,4 +89,21 @@ if __name__ == "__main__":
     metamovies = metamovies.drop(metamovies[['genre','genre_2','genre_3','genre_4', \
                                 'genre_5','genre_6','genre_7','genre_8', \
                                 'genre_9','genre_10','unable to retrieve_1', \
-                                'unable to retrieve_2']],axis=1).dropna()
+                                'unable to retrieve_2']],axis=1)
+    
+    boxofficemovies = title_cleaner(boxofficemovies, 'title')
+    metamovies = title_cleaner(metamovies, 'title')
+    
+    unclean_movies = pd.merge(boxofficemovies, metamovies, how = 'inner', \
+                            on = ['title', 'director'])    
+
+    all_movies = pd.merge(boxofficemovies, metamovies, \
+                        how = 'inner', on = ['clean_title'])    
+    
+    '''
+    boxofficemovies = title_cleaner(boxofficemovies, 'title')                            
+    boxofficemovies = title_cleaner(boxofficemovies, 'director')
+    metamovies = title_cleaner(metamovies, 'title')
+    metamovies = title_cleaner(metamovies, 'director')
+    '''
+    
