@@ -54,19 +54,21 @@ if __name__ == "__main__":
 def clean_data(data):
     clean_movies = []
     for movie in data:
+        clean_dict = {}
         for key, values in movie.iteritems():
-            clean_dict = {}
             if type(values) == list:
                 for index,value in enumerate(values,1):
                     clean_dict["{0}_{1}".format(key,index)] = value
             else:
                 clean_dict[key] = values
-            clean_movies.append(clean_dict)
+        clean_movies.append(clean_dict)
     return clean_movies
 
 
 if __name__ == "__main__":
     boxofficemovies = get_movies('boxofficemojo')
     unclean_metamovies = get_movies('metacritic')
-    metamovies = [movie for movie in unclean_metamovies if type(movie) != list]
+    metamovies = clean_data([movie for movie in unclean_metamovies if type(movie) != list])
     
+    boxofficemovies = pd.DataFrame(boxofficemovies)
+    metamovies = pd.DataFrame(metamovies)
