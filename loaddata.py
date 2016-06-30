@@ -11,7 +11,6 @@ import pprint
 import pandas as pd
 
 # add logging info
-# turn into class
 
 # helper functions
 def get_paths(directory):
@@ -58,8 +57,7 @@ if __name__ == "__main__":
     mojo = Movies(MOJO_DIR)
     data1 = meta.load_movies()
     data2 = mojo.load_movies()
-    clean_movies = clean_data(data2)
+    clean_movies = clean_data(data1)
 
-    # meta_df = pd.DataFrame(data1)
     mojo_df = pd.DataFrame(data2)
     meta_df = pd.DataFrame(clean_movies)
